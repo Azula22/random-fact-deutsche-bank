@@ -7,13 +7,14 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Application.configureRouting(client: OriginalFactsClient) {
+fun Application.configureRouting(client: OriginalFactsClient, factService: FactService) {
+
     routing {
 
         post("/facts") {
             client.getFact()
                 ?.let {
-                    val result = FactService.fetchAndShorten(it)
+                    val result = factService.fetchAndShorten(it)
                     call.respond(HttpStatusCode.OK, result)
                 }
                 ?: call.respond(HttpStatusCode.ServiceUnavailable)
@@ -22,19 +23,19 @@ fun Application.configureRouting(client: OriginalFactsClient) {
 
         get("/facts/{shortenedUrl}") {
             call.parameters["shortenedUrl"]?.let { shortenedURL ->
-                FactService.getFactAndUpdateStatics(shortenedURL)?.let {
+                factService.getFactAndUpdateStatics(shortenedURL)?.let {
                     call.respond(HttpStatusCode.OK, it)
                 } ?: call.respond(HttpStatusCode.NotFound)
             } ?: call.respond(HttpStatusCode.BadRequest)
         }
 
         get("/facts") {
-            call.respond(HttpStatusCode.OK, FactService.getAllFacts())
+            call.respond(HttpStatusCode.OK, factService.getAllFacts())
         }
 
         get("/facts/{shortenedUrl}/redirect") {
             call.parameters["shortenedUrl"]?.let { shortenedURL ->
-                FactService.getFactAndUpdateStatics(shortenedURL)?.let {
+                factService.getFactAndUpdateStatics(shortenedURL)?.let {
                     call.respondRedirect(it.originalPermalink, true)
                 }
 
@@ -42,7 +43,7 @@ fun Application.configureRouting(client: OriginalFactsClient) {
         }
 
         get("/admin/statistics") {
-            call.respond(HttpStatusCode.OK, FactService.getAllStatistics())
+            call.respond(HttpStatusCode.OK, factService.getAllStatistics())
         }
     }
 }

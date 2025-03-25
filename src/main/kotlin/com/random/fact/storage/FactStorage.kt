@@ -5,7 +5,7 @@ import com.random.fact.storage.models.Statistics
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 
-object FactStorage {
+class FactStorage {
     private val storage = ConcurrentHashMap<String, FactDetails>()
 
     fun storeFact(shortUrl: String, text: String, permalink: String) {

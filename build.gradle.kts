@@ -22,6 +22,10 @@ repositories {
     mavenCentral()
 }
 
+tasks.test {
+    useJUnitPlatform()
+}
+
 dependencies {
     implementation("io.ktor:ktor-server-core-jvm:${libs.versions.ktor.version}")
     implementation("io.ktor:ktor-server-netty:${libs.versions.ktor.version}")
@@ -36,6 +40,11 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:${libs.versions.ktor.version}")
     implementation("io.ktor:ktor-client-logging:${libs.versions.ktor.version}")
 
+    testImplementation(kotlin("test"))
+    testImplementation("io.ktor:ktor-client-mock:${libs.versions.ktor.version}")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${libs.versions.kotlin.version}")
+
     testImplementation("io.ktor:ktor-server-test-host:${libs.versions.ktor.version}")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${libs.versions.kotlin.version}")
+//    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+
 }
