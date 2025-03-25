@@ -4,3 +4,5 @@ ktor:
             - com.random.fact.ApplicationKt.module
     deployment:
         port: 8080
+
+useless_fact_url: "https://uselessfacts.jsph.pl/random.json?language=en"
