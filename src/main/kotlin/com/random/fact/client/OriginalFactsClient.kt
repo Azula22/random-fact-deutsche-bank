@@ -1,4 +1,4 @@
-package com.random.fact.http
+package com.random.fact.client
 
 import io.ktor.client.*
 import io.ktor.client.call.*

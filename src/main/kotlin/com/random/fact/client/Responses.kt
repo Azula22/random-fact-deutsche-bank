@@ -1,4 +1,4 @@
-package com.random.fact.http
+package com.random.fact.client
 
 import kotlinx.serialization.Serializable
 
