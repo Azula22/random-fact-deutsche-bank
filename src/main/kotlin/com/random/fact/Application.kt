@@ -1,6 +1,7 @@
 package com.random.fact
 
 import com.random.fact.client.OriginalFactsClient
+import com.random.fact.plugins.configureRequestLogging
 import com.random.fact.plugins.configureRouting
 import com.random.fact.plugins.configureSerialization
 import com.random.fact.services.FactService
@@ -19,4 +20,5 @@ fun Application.module() {
 
     configureRouting(originalFactsClient, factService)
     configureSerialization()
+    configureRequestLogging()
 }

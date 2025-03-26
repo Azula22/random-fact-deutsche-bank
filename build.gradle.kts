@@ -33,6 +33,7 @@ dependencies {
     implementation("io.ktor:ktor-server-config-yaml:${libs.versions.ktor.version}")
     implementation("io.ktor:ktor-server-content-negotiation:${libs.versions.ktor.version}")
     implementation("io.ktor:ktor-serialization-kotlinx-json:${libs.versions.ktor.version}")
+    implementation("io.ktor:ktor-server-call-logging:${libs.versions.ktor.version}")
 
     //client
     implementation("io.ktor:ktor-client-content-negotiation:${libs.versions.ktor.version}")
