@@ -45,6 +45,5 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${libs.versions.kotlin.version}")
 
     testImplementation("io.ktor:ktor-server-test-host:${libs.versions.ktor.version}")
-//    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 
 }

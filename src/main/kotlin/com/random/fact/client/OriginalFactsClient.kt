@@ -12,16 +12,16 @@ import io.ktor.client.statement.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class OriginalFactsClient(private val url: String) {
+private val defaultClient = HttpClient {
+    install(ContentNegotiation) {
+        json(Json { ignoreUnknownKeys = true })
+    }
+    install(Logging)
+}
+
+class OriginalFactsClient(private val url: String, private val client: HttpClient = defaultClient) {
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
-
-    val client = HttpClient {
-        install(ContentNegotiation) {
-            json(Json { ignoreUnknownKeys = true })
-        }
-        install(Logging)
-    }
 
     suspend fun getFact(): OriginalFact? {
         val response = client.get(url)
