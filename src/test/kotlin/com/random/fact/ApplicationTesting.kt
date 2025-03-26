@@ -106,7 +106,20 @@ class ApplicationTesting {
         assertEquals(HttpStatusCode.NotFound, result.status)
     }
 
-    private fun execute(test: suspend (HttpClient) -> Unit) = testApplication {
+    @Test
+    fun integrationFails() = execute(externalRouting = {
+        get("/") {
+            call.respond(HttpStatusCode.InternalServerError)
+        }
+    }) { client ->
+        val fetchFactCall = client.post("/facts")
+        assertEquals(HttpStatusCode.ServiceUnavailable, fetchFactCall.status)
+        val getStatistics = client.get("/admin/statistics")
+        assertEquals(HttpStatusCode.OK, getStatistics.status)
+        assertEquals("[]", getStatistics.bodyAsText())
+    }
+
+    private fun execute(externalRouting: (Routing.() -> Unit)? = null, test: suspend ((HttpClient) -> Unit)) = testApplication {
         val client = createClient {
             install(io.ktor.client.plugins.contentnegotiation.ContentNegotiation) {
                 json()
@@ -124,16 +137,21 @@ class ApplicationTesting {
                     json()
                 }
                 routing {
-                    get("/") {
-                        call.respond(OriginalFact("Random!", "https://test.com/1122aabb"))
-                    }
-                    get("/1122aabb") {
-                        call.respondText { """{"id":"112233","text":"Random!","source":"djtech.net","source_url":"http://www.whocares.net.htm","language":"en","permalink":"https://test.com/1122aabb"}""" }
-                    }
+                    externalRouting?.invoke(this) ?: defaultExternalRouting()
                 }
             }
         }
         test(client)
     }
 
+    private fun Routing.defaultExternalRouting() {
+        get("/") {
+            call.respond(OriginalFact("Random!", "https://test.com/1122aabb"))
+        }
+        get("/1122aabb") {
+            call.respondText {
+                """{"id":"112233","text":"Random!","source":"djtech.net","source_url":"http://www.whocares.net.htm","language":"en","permalink":"https://test.com/1122aabb"}"""
+            }
+        }
+    }
 }
