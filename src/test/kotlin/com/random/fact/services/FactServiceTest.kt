@@ -16,7 +16,7 @@ class FactServiceTest {
         val factService = FactService(FactStorage())
         val fact = OriginalFact("Interesting fact", "https://example.com")
 
-        val shortenedFact = factService.fetchAndShorten(fact)
+        val shortenedFact = factService.fetchShortenAndStore(fact)
 
         assertEquals("Interesting fact", shortenedFact.originalFact)
         assertEquals(factService.generateShortLink(fact.permalink), shortenedFact.shortenedUrl)
@@ -33,8 +33,8 @@ class FactServiceTest {
 
         val fact = OriginalFact("Repeated fact", "https://repeated.com")
 
-        val firstShortened = factService.fetchAndShorten(fact)
-        val secondShortened = factService.fetchAndShorten(fact)
+        val firstShortened = factService.fetchShortenAndStore(fact)
+        val secondShortened = factService.fetchShortenAndStore(fact)
 
         assertEquals(firstShortened.shortenedUrl, secondShortened.shortenedUrl)
         assertEquals(1, factService.getAllFacts().size, "Storage should not create duplicate entries")
@@ -45,7 +45,7 @@ class FactServiceTest {
     fun `getFactAndUpdateStatistics should return fact and update access count`() {
         val factService = FactService(FactStorage())
         val fact = OriginalFact("Access test fact", "https://access-test.com")
-        val shortenedFact = factService.fetchAndShorten(fact)
+        val shortenedFact = factService.fetchShortenAndStore(fact)
 
         val retrievedFact = factService.getFactAndUpdateStatics(shortenedFact.shortenedUrl)
 
@@ -67,8 +67,8 @@ class FactServiceTest {
     @Test
     fun `getAllFacts should return all stored facts`() {
         val factService = FactService(FactStorage())
-        factService.fetchAndShorten(OriginalFact("Fact A", "https://facta.com"))
-        factService.fetchAndShorten(OriginalFact("Fact B", "https://factb.com"))
+        factService.fetchShortenAndStore(OriginalFact("Fact A", "https://facta.com"))
+        factService.fetchShortenAndStore(OriginalFact("Fact B", "https://factb.com"))
 
         val allFacts = factService.getAllFacts()
 
@@ -87,8 +87,8 @@ class FactServiceTest {
     @Test
     fun `getAllStatistics should return correct access counts`() {
         val factService = FactService(FactStorage())
-        val fact1 = factService.fetchAndShorten(OriginalFact("Fact 1", "https://fact1.com"))
-        val fact2 = factService.fetchAndShorten(OriginalFact("Fact 2", "https://fact2.com"))
+        val fact1 = factService.fetchShortenAndStore(OriginalFact("Fact 1", "https://fact1.com"))
+        val fact2 = factService.fetchShortenAndStore(OriginalFact("Fact 2", "https://fact2.com"))
 
         factService.getFactAndUpdateStatics(fact1.shortenedUrl)
         factService.getFactAndUpdateStatics(fact1.shortenedUrl)

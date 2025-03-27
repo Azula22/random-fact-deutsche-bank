@@ -26,13 +26,13 @@ class ApplicationTesting {
         val fetchFactCall = client.post("/facts")
         assertEquals(HttpStatusCode.OK, fetchFactCall.status)
         assertEquals(
-            Json.parseToJsonElement("""{"originalFact":"Random!","shortenedUrl":"5DM3yzUf"}"""),
+            Json.parseToJsonElement("""{"original_fact":"Random!","shortened_url":"5DM3yzUf"}"""),
             Json.parseToJsonElement(fetchFactCall.bodyAsText())
         )
         val getStatistics = client.get("/admin/statistics")
         assertEquals(HttpStatusCode.OK, getStatistics.status)
         assertEquals(
-            Json.parseToJsonElement("""[{"shortenedUrl":"5DM3yzUf","accessCount":0}]"""),
+            Json.parseToJsonElement("""[{"shortened_url":"5DM3yzUf","access_count":0}]"""),
             Json.parseToJsonElement(getStatistics.bodyAsText())
         )
     }
@@ -43,7 +43,7 @@ class ApplicationTesting {
         val getFact = client.get("/facts/5DM3yzUf")
         assertEquals(HttpStatusCode.OK, getFact.status)
         assertEquals(
-            Json.parseToJsonElement("""{"fact":"Random!","originalPermalink":"https://test.com/1122aabb"}"""),
+            Json.parseToJsonElement("""{"fact":"Random!","original_permalink":"https://test.com/1122aabb"}"""),
             Json.parseToJsonElement(getFact.bodyAsText())
         )
     }
@@ -54,13 +54,13 @@ class ApplicationTesting {
         val getFact = client.get("/facts/5DM3yzUf")
         assertEquals(HttpStatusCode.OK, getFact.status)
         assertEquals(
-            Json.parseToJsonElement("""{"fact":"Random!","originalPermalink":"https://test.com/1122aabb"}"""),
+            Json.parseToJsonElement("""{"fact":"Random!","original_permalink":"https://test.com/1122aabb"}"""),
             Json.parseToJsonElement(getFact.bodyAsText())
         )
         val getStatistics = client.get("/admin/statistics")
         assertEquals(HttpStatusCode.OK, getStatistics.status)
         assertEquals(
-            Json.parseToJsonElement("""[{"shortenedUrl":"5DM3yzUf","accessCount":1}]"""),
+            Json.parseToJsonElement("""[{"shortened_url":"5DM3yzUf","access_count":1}]"""),
             Json.parseToJsonElement(getStatistics.bodyAsText())
         )
     }
@@ -71,7 +71,7 @@ class ApplicationTesting {
         val getStatistics = client.get("/facts")
         assertEquals(HttpStatusCode.OK, getStatistics.status)
         assertEquals(
-            Json.parseToJsonElement("""[{"fact":"Random!","originalPermalink":"https://test.com/1122aabb"}]"""),
+            Json.parseToJsonElement("""[{"fact":"Random!","original_permalink":"https://test.com/1122aabb"}]"""),
             Json.parseToJsonElement(getStatistics.bodyAsText())
         )
     }

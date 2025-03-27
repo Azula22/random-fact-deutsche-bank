@@ -11,7 +11,7 @@ import kotlin.collections.List
 
 class FactService(private val factStorage: FactStorage) {
 
-    fun fetchAndShorten(fact: OriginalFact): ShortenedURLFact {
+    fun fetchShortenAndStore(fact: OriginalFact): ShortenedURLFact {
         val id = generateShortLink(fact.permalink)
         factStorage.getFact(id) ?: factStorage.storeFact(id, fact.text, fact.permalink)
         return ShortenedURLFact(fact.text, id)

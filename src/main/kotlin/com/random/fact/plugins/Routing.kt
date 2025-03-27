@@ -14,7 +14,7 @@ fun Application.configureRouting(client: OriginalFactsClient, factService: FactS
         post("/facts") {
             client.getFact()
                 ?.let {
-                    val result = factService.fetchAndShorten(it)
+                    val result = factService.fetchShortenAndStore(it)
                     call.respond(HttpStatusCode.OK, result)
                 }
                 ?: call.respond(HttpStatusCode.ServiceUnavailable)
